@@ -1,0 +1,174 @@
+Q1 List the essential tools used in Devops.
+
+Git
+Jenkins
+Selenium
+Puppet
+Chef
+Ansible
+Nagios
+Docker
+Monit
+ELK –Elasticsearch, Logstash, Kibana
+Collectd/Collect
+Git(GitHub)
+
+Q2. What are the advantages of DevOps with respect to Technical and Business perspective?
+Technical benefits:
+Software delivery is continuous.
+Reduces Complexity in problems.
+Faster approach to resolve problems
+Manpower is reduced.
+Business benefits:
+
+High rate of delivering its features
+Stable operating environments
+More time gained to Add values.
+Enabling faster feature time to market
+
+Q3 The scope for SSH?
+SSH is a Secure Shell which provides users with a secure, encrypted mechanism to log into systems and transfer files.
+To log out a remote machine and work on command line.
+To secure encrypted communications between two hosts over an insecure network.
+
+Q4 Name the popular scripting language of DevOps.
+Shell Scripting 
+Python Scripting
+
+Q5 What are the major difference between the Linux and Unix operating systems?
+Unix:
+It belongs to the family of multitasking, multiuser operating systems.
+These are mostly used in internet servers and workstations.
+It is originally derived from AT&T Unix, developed starting in the 1970s at the Bell Labs research center by Ken Thompson, Dennis Ritchie, and others.
+Both the operating systems are open source but UNIX is relatively similar one as compared to LINUX.
+Linux:
+
+Linux has probably been home to every programming language known to humankind.
+These are used for personal computers.
+The LINUX is based on the kernel of UNIX operating system.
+
+Q6 What measures we have taken to handle revision (version) control?
+To handle revision control, post your code on SourceForge or GitHub so everyone can view it and ask the viewers to give suggestions for the better improvement of it.
+
+Q7 Why we need DevOps ?
+It is a newly emerging term in IT field, which is nothing but a practice that emphasizes the collaboration and communication of both software developers and other information-technology (IT) professionals. It focuses on delivering software product faster and lowering the failure rate of releases.
+Companies are now facing the need to delivering more and faster and better applications to meet the ever more pressing demands of conscious users to reduce the " Time To Market ". Devops often helps deployment to happen very fast.
+
+Q8 What is the function of CI (Continuous Integration) server ? 
+CI server function is to continuously integrate all changes being made and committed to repository by different developers and check for compile errors. It needs to build code several times a day, preferably after every commit so it can detect which commit made the breakage if the breakage happens.
+
+Note: Other available and popular CI tools are  Jenkins, TeamCity, CircleCI , Hudson, Buildbot etc
+
+Q9 What is Continuous Delivery ?
+Is it practice of delivering the software for testing as soon as it is build by CI (Continuous Integration) server's. It requires heavy use of Versioning Control System for so always available to developers and testers alike.
+
+Q10 What is the role of a configuration management tool in devops ?
+Automation plays an essential role in server configuration management. For that purpose we use CM tools , they store information about versions and builds of the software and testware and provide the traceability between software and testware.
+
+Q11 What is the purpose of CM tools and which one you have used ?
+Configuration Management tools' purpose is to automatize deployment and configuration of software on big number of servers. Most CM tools usually use agent architecture which means that every machine being manged needs to have agent installed. My favorite tool is one that uses agentless architecture - Ansible. It only requires SSH and Python. And if raw module is being used, not even Python is required because it can run raw bash commands. Other available and popular CM tools are Puppet, Chef, SaltStack.
+
+Q12 What is AWS (Amazon Web Services)? Did got chance to work on Amazon tools ?
+AWS provides a set of flexible services designed to enable companies to create and deliver products with greater speed and reliability using AWS and DevOps practices . These services simplify commissioning and infrastructure management , application code deployment , automated software release process and monitoring of the application and infrastructure performance. Amazon used tools like AWS CodeCommit, AWS CodeDeploy, AWS CodePipeline etc, that helps to make devops easier.
+
+Q13 What is EC2 ?
+The EC2 service is inseparable from the concept of Amazon Machine Image - AMI . The May is Indeed the image of a virtual machine That Will Be Executed . EC2 based on XEN virtualization , that's why it is quite easy to move XEN servers to EC2 .
+
+Q14 Difference between containers and virtual machines ?
+Each VM instantiation requires starting a full OS. VMs take up a lot of system resources. This quickly adds up to a lot of RAM and CPU cycles. Container host uses the process and file system isolation features of the linux kernel.
+
+Q15 Mention what is Jenkins?
+Jenkins is an open source tool with plugin built for continuous integration purpose.  The principle functionality of Jenkins is to keep a track of version control system and to initiate and monitor a build system if changes occur. It monitors the whole process and provides reports and notifications to alert.
+
+Q16 What is the requirement for using Jenkins?
+To use Jenkins you require
+A source code repository which is accessible, for instance, a Git repository
+A working build script, e.g., a Maven script, checked into the repository
+4) Mention what are the advantages of Jenkins?
+
+Q17 Advantage of Jenkins include?
+At integration stage, build failures are cached
+For each code commit changes an automatic build report notification generates
+To notify developers about build report success or failure, it is integrated with LDAP mail server
+Achieves continuous integration agile development and test driven development
+With simple steps, maven release project is automated
+Easy tracking of bugs at early stage in development environment than production
+
+Q18 Mention some of the useful plugins in Jenkin?
+Some of the important plugins in Jenkin includes
+Maven 2 project
+Amazon EC2
+HTML publisher
+Copy artifact
+Join
+Green Balls
+
+Q19 Explain how you can set up Jenkins job?
+To create a project that is handled via jobs in Jenkins.  Select New item from the menu, once this done enter a name for the job and select free-style job. Then click OK to create new job in Jenkins.  The next page enables you to configure your job.
+
+Q20 What is GIT?
+GIT is a distributed version control system and source code management (SCM) system with an emphasis to handle small and large projects with speed and efficiency.
+
+Q21 What is a repository in GIT?
+A repository contains a directory named .git, where git keeps all of its metadata for the repository. The content of the .git directory are private to git.
+
+Q22 What is the command you can use to write a commit message?
+The command that is used to write a commit message is “git commit –a”.  The –a on the command line instructs git to commit the new content of all tracked files that have been modified. You can use “git add<file>” before git commit –a if new files need to be committed for the first time.
+
+Q23 What is the difference between GIT and SVN?
+The difference between GIT and SVN is
+
+a) Git is less preferred for handling extremely large files or frequently changing binary files while SVN can handle multiple projects stored in the same repository.
+b) GIT does not support ‘commits’ across multiple branches or tags.  Subversion allows the creation of folders at any location in the repository layout.
+c) Gits are unchangeable, while Subversion allows committers to treat a tag as a branch and to create multiple revisions under a tag root.
+
+Q24 What are the advantages of using GIT?
+a) Data redundancy and replication
+b) High availability
+c) Only one.git directory per repository
+d) Superior disk utilization and network performance
+e) Collaboration friendly
+f) Any sort of projects can use GIT
+
+Q25 What language is used in GIT?
+GIT is fast, and ‘C’ language makes this possible by reducing the overhead of runtimes associated with higher languages.
+
+Q26 What is the function of ‘GIT PUSH’ in GIT?
+‘GIT PUSH’ updates remote refs along with associated objects.
+
+Q27 Why GIT better than Subversion?
+GIT is an open source version control system; it will allow you to run ‘versions’ of a project, which show the changes that were made to the code overtime also it allows you keep the backtrack if necessary and undo those changes.  Multiple developers can checkout, and upload changes and each change can then be attributed to a specific developer.
+
+Q28 What is the function of git clone?
+The git clone command creates a copy of an existing Git repository.  To get the copy of a central repository, ‘cloning’  is the most common way used by programmers.
+
+Q29 What is the purpose of branching in GIT?
+The purpose of branching in GIT is that you can create your own branch and jump between those branches. It will allow you to go to your previous work keeping your recent work intact.
+
+Q30 To delete a branch what is the command that is used?
+Once your development branch is merged into the main branch, you don’t need development branch.  To delete a branch use, the command “git branch –d [head]”.
+
+Q31 What is another option for merging in git?
+“Rebasing” is an alternative to merging in git.
+
+Q32 What is the syntax for “Rebasing” in Git?
+The syntax used for rebase is “git rebase [new-commit] “
+
+Q33 What is the difference between ‘git remote’ and ‘git clone’?
+‘git remote add’  just creates an entry in your git config that specifies a name for a particular URL.  While, ‘git clone’ creates a new git repository by copying and existing one located at the URI.
+
+Q34 What is GIT version control?
+With the help of GIT version control, you can track the history of a collection of files and includes the functionality to revert the collection of files to another version.  Each version captures a snapshot of the file system at a certain point of time. A collection of files and their complete history are stored in a repository.
+
+Q35 What is the function of ‘git diff ’ in git?
+‘git diff ’ shows the changes between commits, commit and working tree etc.
+
+Q36 What is ‘git status’ is used for?
+As ‘Git Status’ shows you the difference between the working directory and the index, it is helpful in understanding a git more comprehensively.
+
+Q37 What is the difference between the ‘git diff ’and ‘git status’?
+‘git diff’ is similar to ‘git status’, but it shows the differences between various commits and also between the working directory and index.
+
+Q38 What is the use of ‘git log’?
+To find specific commits in your project history- by author, date, content or history ‘git log’ is used.
+
