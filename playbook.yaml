@@ -25,11 +25,10 @@
      msg: "{{ ec2_tags.tags }} {{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
      #msg: "Anuj"
      
-  - name: add several users
-    debug: 
-      msg: "Anuj{{item}}" 
-    with_file:
-     - file
+  - name: Add new instances to host group
+      debug:
+        msg: "hostname={{item.public_ip}}" 
+      with_items: ec2_facts.instances
 
   - name: "Creating Result file"
     shell: echo "Instance ID having Null Tag is {{ ansible_ec2_instance_id }}" > a.txt
