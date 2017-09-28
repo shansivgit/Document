@@ -44,4 +44,4 @@
     when: ( "{{ item }}" == "{}")
    
   - name: "Join Result Files"
-    shell: paste ./instanceid ./tags
+    shell: paste ./instanceid ./tags > final
