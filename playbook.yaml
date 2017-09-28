@@ -32,7 +32,6 @@
     
   - name: "Creating Tag Result file"
     shell: echo "Tag Value  {{ item }}" >./tags
+    when: ("{{ item }}" == {})
     with_items: 
      - "{{ ec2_tags.results |map(attribute='tags')|list}}"
-    when: ("{{ item }}" == {})
-
