@@ -20,8 +20,8 @@
       resource: "{{ item }}"
       state: list
     register: ec2_tags
-    shell: echo "Instance ID having Null Tag is {{ ansible_ec2_instance_id }}" > a.txt
-    when: (ec2_tags.tags == {})
+    #shell: echo "Instance ID having Null Tag is {{ ansible_ec2_instance_id }}" > a.txt
+    #when: (ec2_tags.tags == {})
     with_items: "{{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
 
   - debug:
