@@ -30,7 +30,7 @@
     debug:
      msg: "{{item}}"
     with_nested: 
-     - instance_ids
+     - [ 'clientdb', 'employeedb', 'providerdb' ]
 
   - name: "Creating Result file"
     shell: echo "Instance ID having Null Tag is {{ ansible_ec2_instance_id }}" > a.txt
