@@ -25,9 +25,14 @@
   - debug:
      msg: "{{ ec2_tags.results |map(attribute='item')|list}}, {{ ec2_tags.results |map(attribute='tags')|list}}"
 
-  - name: "Creating Result file"
-    shell: echo "Instance ID having Null Tag is {{ item[0] }} with tag Value is {{ item[1] }}" >> a.txt
+  - name: "Creating Instance ID's file"
+    shell: echo "Instance ID : {{ item }}" >./instanceid
     with_nested: 
      - "{{ ec2_tags.results |map(attribute='item')|list}}"
+    
+  - name: "Creating Tag Result file"
+    shell: echo "Tag Value : {{ item }}" >./tags
+    with_nested: 
      - "{{ ec2_tags.results |map(attribute='tags')|list}}"
-    when: ("{{ item[1] }}" == "{}")
+    when: ("{{ item }}" == "{}")
+
