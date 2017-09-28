@@ -22,16 +22,24 @@
     register: ec2_tags
     with_items: "{{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
 
-  - debug:
-     msg: "{{ ec2_tags.results |map(attribute='item')|list}}, {{ ec2_tags.results |map(attribute='tags')|list}}"
+  - block:
+    - name: Remove Temporary files
+        file: path='./{{ item }}' state=absent
+      with_items:
+        - instanceid
+        - tags
+    ignore_errors: yes 
 
   - name: "Creating Instance ID's file"
-    shell: echo "Instance ID  {{ item }}" >./instanceid
+    shell: echo "Instance ID  {{ item }}" >>./instanceid
     with_items: 
      - "{{ ec2_tags.results |map(attribute='item')|list}}"
     
   - name: "Creating Tag Result file"
-    shell: echo "Tag Value  {{ item }}" >./tags
+    shell: echo "Tag Value  {{ item }}" >>./tags
     with_items: 
      - "{{ ec2_tags.results |map(attribute='tags')|list}}"
     when: ( "{{ item }}" == "{}")
+   
+  - name: "Join Result Files"
+    shell: paste ./instanceid ./tags
