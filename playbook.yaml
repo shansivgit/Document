@@ -26,12 +26,12 @@
      msg: "{{ ec2_tags.results |map(attribute='item')|list}}, {{ ec2_tags.results |map(attribute='tags')|list}}"
 
   - name: "Creating Instance ID's file"
-    shell: echo "Instance ID : {{ item }}" >./instanceid
+    shell: echo "Instance ID  {{ item }}" >./instanceid
     with_nested: 
      - "{{ ec2_tags.results |map(attribute='item')|list}}"
     
   - name: "Creating Tag Result file"
-    shell: echo "Tag Value : {{ item }}" >./tags
+    shell: echo "Tag Value  {{ item }}" >./tags
     with_nested: 
      - "{{ ec2_tags.results |map(attribute='tags')|list}}"
     when: ("{{ item }}" == "{}")
