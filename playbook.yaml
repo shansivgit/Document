@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+  vars:
+  - ansible_ec2_instance_id: i-03f7d9f815835e98a
+  - ansible_ec2_placement_region: ap-south-1
+
+  tasks:
+  - name: Gather EC2 instance metadata
+    action: ec2_metadata_facts
+  - name: Gather EC2 instance metadata
+    #action: ec2_instance_facts
+    ec2_remote_facts:
+     region: "{{ ansible_ec2_placement_region }}"
+    register: ec2_facts
+
+  - name: Get only running instance IP addresses.
+    debug:
+     msg: "{{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
+    register: output
+
+  - name: Obtain EC2 tags for this instance
+    local_action:
+      module: ec2_tag
+      region: "{{ ansible_ec2_placement_region }}"
+      resource: "{{ ansible_ec2_instance_id }}"
+      state: list
+    register: ec2_tags
+#  - shell: "aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --output text "
+    #with_items: VM
+#    register: groupids
+  - debug:
+     msg: "{{ ec2_tags.tags }} {{output}}"
+     #msg: "Anuj"
+  - name: "Creating Result file"
+    shell: echo "Instance ID having Null Tag is {{ ansible_ec2_instance_id }}" > a.txt
+    when: (ec2_tags.tags == {})
