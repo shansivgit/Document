@@ -17,21 +17,13 @@
     local_action:
       module: ec2_tag
       region: "{{ ansible_ec2_placement_region }}"
-      resource: "{{ ansible_ec2_instance_id }}"
+      resource: "{{ item }}"
       state: list
     register: ec2_tags
-    
- # vars:
-#    instanceList: "{{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
-    
-  - debug:
-     msg: "{{ ec2_tags.tags }} "
-     #msg: "Anuj"
-     
-  - name: Add new instances to host group
-    debug:
-      msg: "{{item}}"
     with_items: "{{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
+
+  - debug:
+     msg: "{{ ec2_tags.tags }}"
 
   - name: "Creating Result file"
     shell: echo "Instance ID having Null Tag is {{ ansible_ec2_instance_id }}" > a.txt
