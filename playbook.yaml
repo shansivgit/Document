@@ -23,7 +23,7 @@
     with_items: "{{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
 
   - debug:
-     msg: "{{ ec2_tags.results |map(attribute='item')| union (ec2_tags.results |map(attribute='tags')) | list}}"
+     msg: "{{ ec2_tags.results |map(attribute='item','tags') | list}}"
 
   - name: "Creating Result file"
     shell: echo "Instance ID having Null Tag is {{ item }}" >> a.txt
