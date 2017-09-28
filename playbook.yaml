@@ -24,7 +24,9 @@
 
   - block:
     - name: Remove Temporary files
-        file: path="{{ item }}" state=absent
+      file:
+          path: "{{ item }}"
+          state: absent
       with_items:
         - instanceid
         - tags
