@@ -26,8 +26,8 @@
      #msg: "Anuj"
      
   - name: Add new instances to host group
-      debug:
-        msg: "hostname={{item.public_ip}}" 
+     debug:
+       msg: "hostname={{item.public_ip}}" 
       with_items: ec2_facts.instances
 
   - name: "Creating Result file"
