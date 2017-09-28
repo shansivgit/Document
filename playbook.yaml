@@ -3,6 +3,7 @@
   vars:
   - ansible_ec2_instance_id: i-03f7d9f815835e98a
   - ansible_ec2_placement_region: ap-south-1
+  - instance_ids: ['i-fdskjbdsk', 'i-kjdsbfdshbfvds']
 
   tasks:
   - name: Gather EC2 instance metadata
@@ -29,7 +30,7 @@
     debug:
      msg: "{{item}}"
     with_nested: 
-     - "{{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
+     - instance_ids
 
   - name: "Creating Result file"
     shell: echo "Instance ID having Null Tag is {{ ansible_ec2_instance_id }}" > a.txt
