@@ -26,10 +26,9 @@
      #msg: "Anuj"
      
   - name: add several users
-     msg: "{{ item }}"
+     msg: "Hello"
     with_nested: 
-     #- "{{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
-     - [ 'clientdb', 'employeedb', 'providerdb' ]
+     - "{{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
 
   - name: "Creating Result file"
     shell: echo "Instance ID having Null Tag is {{ ansible_ec2_instance_id }}" > a.txt
