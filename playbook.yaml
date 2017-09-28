@@ -27,8 +27,8 @@
      
   - name: Add new instances to host group
     debug:
-      msg: "{{item.public_ip}}"
-     with_items: ec2_facts.instances
+      msg: "{{ec2_facts.instances.public_ip}}"
+     #with_items: ec2_facts.instances
 
   - name: "Creating Result file"
     shell: echo "Instance ID having Null Tag is {{ ansible_ec2_instance_id }}" > a.txt
