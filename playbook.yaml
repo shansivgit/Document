@@ -27,5 +27,5 @@
 
   - name: "Creating Result file"
     shell: echo "Instance ID having Null Tag is {{ item }}" >> a.txt
-    when: ("{{item}}" == {})
+    when: ("{%item%}}" == {})
     with_items: "{{ ec2_tags.results |map(attribute='tags')|list}}"
