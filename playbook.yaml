@@ -28,4 +28,4 @@
   - name: "Creating Result file"
     shell: echo "Instance ID having Null Tag is {{ item }}" >> a.txt
     with_items: "{{ ec2_tags.results |map(attribute='tags')|list}}"
-    when: ("{{item}}}" == {})
+    when: ({{item}}} == {})
