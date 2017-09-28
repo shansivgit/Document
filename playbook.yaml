@@ -26,7 +26,8 @@
      #msg: "Anuj"
      
   - name: add several users
-     msg: "Hello"
+    debug:
+     msg: "{{item}}"
     with_nested: 
      - "{{ ec2_facts.instances|selectattr('state', 'equalto', 'running')|map(attribute='id')|list }}"
 
