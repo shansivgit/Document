@@ -26,8 +26,8 @@
      msg: "{{ ec2_tags.results  | list}}"
 
   - name: "Creating Result file"
-    shell: echo "Instance ID having Null Tag is {{ item.0 }} with tag Value is {{ item.1 }}" >> a.txt
+    shell: echo "Instance ID having Null Tag is {{ item[0] }} with tag Value is {{ item[1] }}" >> a.txt
     with_nested: 
      - "{{ ec2_tags.results |map(attribute='item')|list}}"
      - "{{ ec2_tags.results |map(attribute='tags')|list}}"
-    when: ("{{ item.1 }}" == "{}")
+    when: ("{{ item[1] }}" == "{}")
