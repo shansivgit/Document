@@ -27,7 +27,7 @@
      
   - name: add several users
     debug: 
-      msg: "{{item}}" 
+      msg: "Anuj{{item}}" 
     with_file:
      - file
 
