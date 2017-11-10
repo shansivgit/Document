@@ -1,17 +1,15 @@
 S.No	Nagios	DataDog
-1	We need to configure what we needs to be monitored	We have options from which we can select parameter to be monitored
-2	Metrics and Dimensions are easy to understand and configure	Mertrics are difficult to understand initially but it get solved with time
-3	We have lot of plugins like AWS Cloudwatch to fetch monitoring Stats and getting alerts	"There are lot of intergrations provided by Data Dog so that we can get 
+1	We need to configure what we needs to be monitored	|	We have options from which we can select parameter to be monitored
+2	Metrics and Dimensions are easy to understand and configure	|	Mertrics are difficult to understand initially but it get solved with time
+3	We have lot of plugins like AWS Cloudwatch to fetch monitoring Stats and getting alerts		|	"There are lot of intergrations provided by Data Dog so that we can get 
 monitoring stats"
-4	We can host our Own Nagios and can increase or decrease performance	We don’t have access to Data Dog portal and it can be accessed over internet only
-5	"We can host nagios monitoring tool on private servers and can install
-NRPE process on all other agents"	"We have to use Data Dog portal and we can install agent to fetch data 
-from that specific server"
-6	Nagios portal is more faster since its hosted locally	Data Dog portal gets slow with more data being fetched using API
-7	Nagios provides dedicated monitoring tool and you can maintain the uptime	Data Dog since hosted by vendor we can not control the Downtime of the application
-8	Nagios is petty simple and anyone can use the portal	Where as Data Dog is bit technical when some one accessing the monitoring stats
-9	Its easy to automate the task of creating Host configurations and services in nagios	Its difficult to automate the process of adding configuration to Data Dog
-10	its not high priced software	Its little bit pricey as compared to other monitoring tool
+4	We can host our Own Nagios and can increase or decrease performance	|	We don’t have access to Data Dog portal and it can be accessed over internet only
+5	"We can host nagios monitoring tool on private servers and can install NRPE process on all other agents"	|	"We have to use Data Dog portal and we can install agent to fetch data from that specific server"
+6	Nagios portal is more faster since its hosted locally	|	Data Dog portal gets slow with more data being fetched using API
+7	Nagios provides dedicated monitoring tool and you can maintain the uptime	|	Data Dog since hosted by vendor we can not control the Downtime of the application
+8	Nagios is petty simple and anyone can use the portal	|	Where as Data Dog is bit technical when some one accessing the monitoring stats
+9	Its easy to automate the task of creating Host configurations and services in nagios	|	Its difficult to automate the process of adding configuration to Data Dog
+10	its not high priced software	|	Its little bit pricey as compared to other monitoring tool
 		
 "Both Nagios and Data Dog provides almost same features and benefits but we are getting more benefits from nagios since its easy to install conifgure and customize and 
 also we can manage nagios onto our own servers but on other hand Data Dog show the stats on there portal and it can be slow if multiple people are using same portal across the globe. 
