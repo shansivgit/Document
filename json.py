@@ -6,15 +6,6 @@ import urllib2
 a = ("lnfkjbdfhvdf")
 b = ("jvnfdvbdfhvdf")
 
-filedata = urllib2.urlopen('https://raw.githubusercontent.com/Anuj1990/Content/master/sample.properties')  
-datatowrite = filedata.read()
-
-with open('sample.properties', 'wb') as f:  
-    f.write(datatowrite)
-    
-f = open('sample.properties', 'r')
-headers = f.read()
-
 sep='='
 props = {}
 with open('sample.properties', "rt") as f:
