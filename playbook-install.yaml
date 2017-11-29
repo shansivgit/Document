@@ -6,6 +6,11 @@
   - RemotePath: /tmp
 
   tasks:
+  - name: install the latest version of Apache
+    yum:
+      name: unzip
+      state: latest
+      
   - name: Download BIGFIX Client to server
     command: wget {{downloadURL}} -O {{ RemotePath }}/{{ zipName }}.zip
    
@@ -14,6 +19,7 @@
       src: "{{ RemotePath }}/{{ zipName }}.zip"
       dest: /tmp
       remote_src: yes
+      
   - name: Creates BES Client directory
     file:
       path: /etc/opt/BESClient
@@ -22,10 +28,12 @@
       group: root
       mode: 0775
       recurse: yes
+      
   - name: Install Big Fix RPM locally
     yum:
       name: "/tmp/{{ RemotePath }}/{{ zipName }}/*.rpm"
       state: present
+      
   - copy:
       src: "/tmp/{{ RemotePath }}/{{ zipName }}/iem-cps_actionsite.afxm"
       dest: /etc/opt/BESClient/actionsite.afxm
