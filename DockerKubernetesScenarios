@@ -1,0 +1,18 @@
+Scenarios to be covered in Docker:
+
+1) Installation of docker on standalone server.
+2) Configuring Docker hub and playing with Images pull and push commands.
+3) Configuring ECR AWS service instead of Docker hub.
+4) Building a normal Tomcat application on docker.
+5) Running applications like MYSQL, Mongo DB, PostreSQL kind of databases on docker.
+6) Integrating different components of applications with different Docker Containers( Micro Services Concept ).
+7) Docker Compose and docker build concept.
+
+
+Kubernetes
+
+1) Complete setup of kubernetes.
+2) Understanding concepts like Pod, Services, Deployment and exposing service.
+3) Setup using sample application on kubernetes.
+4) Performing deployment with new Docker images file.
+5) Rollback concept in case of Kubernetes.
