@@ -1,6 +1,3 @@
-
-
-
 set UVPATH=%~1
 set UVFILE=%2
 set HEXFILE=%3
@@ -14,17 +11,23 @@ mkdir %VERSIONSTR%\%UVFILE%
 mkdir %VERSIONSTR%\%UVFILE%\%HEXFILE%
 
 cd "%bamboo_build_working_directory%\%UVPATH%\out\
-IF EXIST *.hex (
-echo "Files already exist"
+
+for %%G in (hex bin axf map) do (
+IF EXIST "*.%%G" (
+echo "%%G File already exist"
 exit 1
 ) ELSE (
+echo "Files Does not exists proceeding with next Steps"
+)
+)
+
 cd %bamboo_build_working_directory%\automation\Hex2bin-1.0.10\Windows\hex2bin.exe "%bamboo_build_working_directory%\%UVPATH%\out\%HEXFILE%.hex"
+
 copy "%bamboo_build_working_directory%\%UVPATH%\out\%HEXFILE%.hex" %VERSIONSTR%\%UVFILE%\%HEXFILE%\%HEXFILE%.hex
 copy "%bamboo_build_working_directory%\%UVPATH%\out\%HEXFILE%.bin" %VERSIONSTR%\%UVFILE%\%HEXFILE%\%HEXFILE%.bin
 copy "%bamboo_build_working_directory%\%UVPATH%\out\%HEXFILE%.axf" %VERSIONSTR%\%UVFILE%\%HEXFILE%\%HEXFILE%.axf
 copy "%bamboo_build_working_directory%\%UVPATH%\out\%HEXFILE%.map" %VERSIONSTR%\%UVFILE%\%HEXFILE%\%HEXFILE%.map
 copy "%bamboo_build_working_directory%\%UVPATH%\*.txt" %VERSIONSTR%\%UVFILE%\%HEXFILE%\
-)
 
 IF "%bamboo_CRCFILE%"=="1" (
         python automation\image_tool.py %VERSIONSTR%\%UVFILE%\%UVFILE%.bin %VERSIONSTR%\%UVFILE%\%UVFILE%_crc.bin
