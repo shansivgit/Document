@@ -1,1 +1,20 @@
+For CSI migraion we need below things
 
+Csidocker.tar file which will have the docker csi image
+Mongodb.tar.gz which will contain dump
+Mongodb.tar which is mongo db docker inages
+
+Now create a folder /opt/mongodb and place all files in mongodb.tar.gz in that folder
+
+Then import csidocker image
+Docker load -i csidocker.tar
+Docker load -i mongodb.tar
+
+now run mongodb container using below command
+
+Docker run -d -p 27017:27017 -v /opt/mongodb:/data/db mongodb
+
+Now execue pipeline which will execute all tbe steps and change
+Host ip of mongodb in spm.war for env.properties file and then build a final csi docker image
+
+Jenkina file will run the csidocker image file also accordingly.
