@@ -12,7 +12,7 @@ pipeline {
 		 echo 'test:  validate-template' 
 		 
 		  script {
-		echo branchName = GIT_BRANCH.split('/')[1]
+		def branchName = GIT_BRANCH.split('/')[1]
 		  def awsDeploymentAccount = ''
 		 def deploymentRole = ''
 		   if (branchName == "master"){ 
