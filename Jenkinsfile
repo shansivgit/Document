@@ -14,7 +14,7 @@ pipeline {
 		  script {
 		  def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
 		echo branchName
-		echo GIT_BRANCH 
+		echo GIT_BRANCH.spilt('/')[1]
 		  def awsDeploymentAccount = ''
 		 def deploymentRole = ''
 		   if (BRANCH_NAME == "master"){ 
