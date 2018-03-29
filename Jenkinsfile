@@ -47,13 +47,9 @@ pipeline {
 			echo awsDeploymentAccount
 		     } 
             }
-          }
-        }
- 	}	
-	
-	
-	
- } 
+         }
+     }
+ }	
  post {
  	always {
  		deleteDir()
