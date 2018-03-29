@@ -11,19 +11,6 @@ pipeline {
 
  stages {
 	 
-    stage('SonarQube analysis') {
-	   steps{
-        	
-            }
-	}
-    	stage("Wait for Quality Gate"){
-		steps{
-			script{
-				
-              	}
-	      }
-    	}
- 	
  	stage('test: validate-template') {
             steps { 
 		 echo 'test:  validate-template' 
