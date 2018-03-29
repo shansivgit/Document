@@ -5,10 +5,6 @@ pipeline {
  	label 'master'
  }
 
- environment {
-	
- }
-
  stages {
 	 
  	stage('test: validate-template') {
