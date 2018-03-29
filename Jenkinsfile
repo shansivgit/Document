@@ -12,17 +12,15 @@ pipeline {
 		 echo 'test:  validate-template' 
 		 
 		  script {
-		  def branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-		echo branchName
-		echo GIT_BRANCH.split('/')[1]
+		echo branchName = GIT_BRANCH.split('/')[1]
 		  def awsDeploymentAccount = ''
 		 def deploymentRole = ''
-		   if (BRANCH_NAME == "master"){ 
+		   if (branchName == "master"){ 
 				awsDeploymentAccount = 'prod'//prod
 				deploymentRole = 'WowAutomatedDeployment'
 		 
 			}
-			if(Branch.isDevelopBranch(this)) {
+			if(branchName == "develop") {
 				deploymentRole = 'WowOTRDeploymentRole'
 				awsDeploymentAccount = 'dev'//dev
 			}
