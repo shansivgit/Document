@@ -10,27 +10,12 @@ pipeline {
  }
 
  stages {
- 	stage('build') {
- 		steps {
-			echo 'begin build stage'
- 			echo 'Issue build command...'
-			echo 'Build Complete...'
- 		}
- 	}
-	 
-	stage('Run Dotnet Test'){
-		 steps{
-			 echo "Executing Dotnet Test Cases"
-		 }
-	 }
-	 
 	 
     stage('SonarQube analysis') {
 	   steps{
         	
             }
 	}
-    }
     	stage("Wait for Quality Gate"){
 		steps{
 			script{
