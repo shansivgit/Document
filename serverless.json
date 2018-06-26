@@ -1,0 +1,306 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Transform": "AWS::Serverless-2016-10-31",
+    "Description": "An AWS Serverless Application that uses the ASP.NET Core framework running in Amazon Lambda.",
+    "Parameters": {
+        "ShouldCreateBucket": {
+            "Type": "String",
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Description": "If true then the S3 bucket that will be proxied will be created with the CloudFormation stack."
+        },
+        "BucketName": {
+            "Type": "String",
+            "Description": "Name of S3 bucket that will be proxied. If left blank a new table will be created.",
+            "MinLength": "0"
+        },
+        "isStubData": {
+            "Type": "String",
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Description": "If true then return mock data."
+        },
+        "WOWENVIRONMENT": {
+            "Type": "String",
+            "AllowedValues": [
+                "dev",
+                "qa",
+                "uat",
+                "prod"
+            ],
+            "Description": "Config enviroment settings."
+        },
+        "Subnet1": {
+            "Type": "String",
+            "AllowedValues": [
+                "subnet-3b51c861",
+                "subnet-fa2279b2"
+            ],
+            "Description": "Internal subnet where Lambda function will run."
+        },
+        "Subnet2": {
+            "Type": "String",
+            "AllowedValues": [
+                "subnet-3b51c861",
+                "subnet-fa2279b2"
+            ],
+            "Description": "Internal subnet where Lambda function will run."
+        },
+        "SecurityGroup": {
+            "Type": "String",
+            "AllowedValues": [
+                "sg-1d5a9c6d"
+            ],
+            "Description": "Security group for Lambda function."
+        }
+    },
+    "Conditions": {
+        "CreateS3Bucket": {
+            "Fn::Equals": [
+                {
+                    "Ref": "ShouldCreateBucket"
+                },
+                "true"
+            ]
+        },
+        "BucketNameGenerated": {
+            "Fn::Equals": [
+                {
+                    "Ref": "BucketName"
+                },
+                ""
+            ]
+        }
+    },
+    "Resources": {
+        "WarmupRule": {
+            "DependsOn": [
+                "ProxyFunction"
+            ],
+            "Type": "AWS::Events::Rule",
+            "Properties": {
+                "Description": "",
+                "ScheduleExpression": "rate(5 minutes)",
+                "Name": {
+                    "Fn::Sub": "${WOWENVIRONMENT}-LambdaWarmupRule-${AWS::StackName}"
+                },
+                "State": "ENABLED",
+                "Targets": [
+                    {
+                        "Arn": {
+                            "Fn::GetAtt": [ "ProxyFunction", "Arn" ]
+                        },
+                        "Id": {
+                            "Fn::Sub": "${WOWENVIRONMENT}-ProxyLambda-${AWS::StackName}"
+                        }
+                    }
+                ]
+            }
+        },
+        "LambdaFunctionRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                },
+                "ManagedPolicyArns": [
+                    "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole",
+                    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+                    "arn:aws:iam::aws:policy/AmazonSESFullAccess",
+                    "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
+                    "arn:aws:iam::aws:policy/AmazonCognitoPowerUser"
+                ],
+                "Path": "/",
+                "Policies": [
+                    {
+                        "PolicyName": "ses_policy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Sid": "VisualEditor0",
+                                    "Effect": "Allow",
+                                    "Action": "ses:*",
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "PolicyName": "sns_policy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Sid": "VisualEditor0",
+                                    "Effect": "Allow",
+                                    "Action": "sns:*",
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    },
+			 {
+                        "PolicyName": "ssm_policy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Sid": "VisualEditor0",
+                                    "Effect": "Allow",
+                                    "Action": "ssm:GetParameter",
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    },
+					          {
+                        "PolicyName": "sqs_policy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Sid": "VisualEditor0",
+                                    "Effect": "Allow",
+                                    "Action": "sqs:*",
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "PolicyName": "xray_policy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Sid": "VisualEditor0",
+                                    "Effect": "Allow",
+                                    "Action": "xray:*",
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "ProxyFunction": {
+            "Type": "AWS::Serverless::Function",
+            "DependsOn": [
+                "LambdaFunctionRole"
+            ],
+            "Properties": {
+                "Handler": "WOW.OAM.RegisterUser.WebAPI::WOW.OAM.RegisterUser.WebAPI.LambdaEntryPoint::FunctionHandlerAsync",
+                "Runtime": "dotnetcore2.0",
+                "CodeUri": "",
+                "MemorySize": 256,
+                "Timeout": 60,
+                "Role": {
+                    "Fn::GetAtt": [
+                        "LambdaFunctionRole",
+                        "Arn"
+                    ]
+                },
+                "VpcConfig": {
+                    "SecurityGroupIds": [
+                        {
+                            "Ref": "SecurityGroup"
+                        }
+                    ],
+                    "SubnetIds": [
+                        {
+                            "Ref": "Subnet1"
+                        },
+                        {
+                            "Ref": "Subnet2"
+                        }
+                    ]
+                },
+                "Policies": [
+                    "AWSLambdaFullAccess"
+                ],
+                "Tracing": "Active",
+                "Environment": {
+                    "Variables": {
+                        "AppS3Bucket": {
+                            "Fn::If": [
+                                "CreateS3Bucket",
+                                {
+                                    "Ref": "Bucket"
+                                },
+                                {
+                                    "Ref": "BucketName"
+                                }
+                            ]
+                        },
+                        "Stub": {
+                            "Ref": "isStubData"
+                        },
+                        "WOWENVIRONMENT": {
+                            "Ref": "WOWENVIRONMENT"
+                        }
+                    }
+                },
+                "Events": {
+                    "PutResource": {
+                        "Type": "Api",
+                        "Properties": {
+                            "Path": "/{proxy+}",
+                            "Method": "ANY"
+                        }
+                    }
+                }
+            }
+        },
+        "Bucket": {
+            "Type": "AWS::S3::Bucket",
+            "Condition": "CreateS3Bucket",
+            "Properties": {
+                "BucketName": {
+                    "Fn::If": [
+                        "BucketNameGenerated",
+                        {
+                            "Ref": "AWS::NoValue"
+                        },
+                        {
+                            "Ref": "BucketName"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "S3ProxyBucket": {
+            "Value": {
+                "Fn::If": [
+                    "CreateS3Bucket",
+                    {
+                        "Ref": "Bucket"
+                    },
+                    {
+                        "Ref": "BucketName"
+                    }
+                ]
+            }
+        }
+    }
+}
