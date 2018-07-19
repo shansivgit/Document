@@ -1,41 +1,86 @@
-set UVPATH=%~1
-set UVFILE=%2
-set HEXFILE=%3
+@Library('shared-jenkins') _
+import java.text.SimpleDateFormat
 
-set VERSIONSTR=%bamboo_VERSIONBASE%%bamboo_buildNumber%
+def buildAgent = 'ansible2.5.0'
+def ansibleVersion = 'ansible2.5.0'
+def playbook = ""
+def extraVars = ""
+def inventoryFile = ""
 
-echo "Delivering project %UVPATH%, %UVFILE%, %HEXFILE%"
+//scm pull variables
+def branchUsed = '*/master'
+def jenkinsCredentialForGit = 'removed'
+def gitCloneURL = 'removed'
+def playbookPathPrefix = '${WORKSPACE}/ansible'
+def limit = ''
 
-mkdir %VERSIONSTR%
-mkdir %VERSIONSTR%\%UVFILE%
-mkdir %VERSIONSTR%\%UVFILE%\%HEXFILE%
+if (environment == 'prod')
+{
+    buildAgent = 'prod'
+    ansbileVersion = 'ansible2.5.0'
+}
 
-cd "%bamboo_build_working_directory%\%UVPATH%\out\
 
-for %%G in (hex bin axf map) do (
-IF EXIST "*.%%G" (
-echo "%%G File already exist"
-exit 1
-) ELSE (
-echo "Files Does not exists proceeding with next Steps"
-)
-)
+timestamps
+{
+    node("$buildAgent"){
+        wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]){
+                stage('SCM Pull'){
+                        currentBuild.displayName = BUILD_NUMBER + ': ' + environment
+                        currentBuild.description = "All API Deployed"
+                        deleteDir()
+                        checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: "$branchUsed"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [[path: 'ansible/']]]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: "$jenkinsCredentialForGit", url: "$gitCloneURL"]]]
+                }
 
-cd %bamboo_build_working_directory%\automation\Hex2bin-1.0.10\Windows\hex2bin.exe "%bamboo_build_working_directory%\%UVPATH%\out\%HEXFILE%.hex"
+                stage('ansible deploy'){
+                        withCredentials([file(credentialsId: "$jenkinsVaultpassFile", variable: 'vaultpass')])
+                        {
+                            if (ServiceType == 'api'){
+								if (binderVersion != ""){
+									 playbook = "$playbookPathPrefix/leapfrog-api.yml"
+									 module = "binder"
+									 extraVars = "-e \"env=${environment} buildVersion=${binderVersion} moduleName=${module} HARD_INSTALL=${hardinstall} \" --vault-password-file=$vaultpass"
+									 inventoryFile = "$playbookPathPrefix/inventory/leapfrog.${environment}"
+									 limit = "${serverName}"
+									 executePlaybook(playbook, inventoryFile, limit, extraVars, ServiceType)
+								}
+								if (chartVersion != ""){
+									 playbook = "$playbookPathPrefix/leapfrog-api.yml"
+									 module = "chart"
+									 extraVars = "-e \"env=${environment} buildVersion=${chartVersion} moduleName=${module} HARD_INSTALL=${hardinstall} \" --vault-password-file=$vaultpass"
+									 inventoryFile = "$playbookPathPrefix/inventory/leapfrog.${environment}"
+									 limit = "${serverName}"
+									 executePlaybook(playbook, inventoryFile, limit, extraVars, ServiceType)
+								}
+										 
+							}
+                        }
+					}
+			}
+        }
+	def executePlaybook(def playbook, def inventoryFile, def limit, def extraVars, def ServiceType){
 
-copy "%bamboo_build_working_directory%\%UVPATH%\out\%HEXFILE%.hex" %VERSIONSTR%\%UVFILE%\%HEXFILE%\%HEXFILE%.hex
-copy "%bamboo_build_working_directory%\%UVPATH%\out\%HEXFILE%.bin" %VERSIONSTR%\%UVFILE%\%HEXFILE%\%HEXFILE%.bin
-copy "%bamboo_build_working_directory%\%UVPATH%\out\%HEXFILE%.axf" %VERSIONSTR%\%UVFILE%\%HEXFILE%\%HEXFILE%.axf
-copy "%bamboo_build_working_directory%\%UVPATH%\out\%HEXFILE%.map" %VERSIONSTR%\%UVFILE%\%HEXFILE%\%HEXFILE%.map
-copy "%bamboo_build_working_directory%\%UVPATH%\*.txt" %VERSIONSTR%\%UVFILE%\%HEXFILE%\
+			try {
+				ansiblePlaybook(
+				playbook: "$playbook",
+				inventory: "$inventoryFile",
+				colorized: true,
+				limit: "$limit",
+				installation: "$buildAgent",
+				extras: "$extraVars")
+			}
+			catch (e)
+			{
+				currentBuild.result='FAILURE'
+				throw e
 
-IF "%bamboo_CRCFILE%"=="1" (
-        python automation\image_tool.py %VERSIONSTR%\%UVFILE%\%UVFILE%.bin %VERSIONSTR%\%UVFILE%\%UVFILE%_crc.bin
-        mv %VERSIONSTR%\%UVFILE%\%UVFILE%_crc.bin %VERSIONSTR%\%UVFILE%\%UVFILE%.bin
-)
+			}   
+			finally
+			{
+				pushDeployLogsToBAMS.push( "LeapfrogDeployment-$ServiceType", environment, BuildVersion, ansibleVersion)
+			}
+	}
 
-IF "%bamboo_planRepository_1_branch%"=="SDK3_0_4" (
-	call buildtools\images\copy_to_images.bat %VERSIONSTR% "/images/BLE/Builds"
-) ELSE (
-  echo "skipping copy to images"
-)
+}
+
+
