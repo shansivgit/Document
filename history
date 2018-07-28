@@ -1,0 +1,95 @@
+    1  apt updagte
+    2  apt update
+    3  apt upgrade
+    4  apt install docker.io
+    5  docker 
+    6  docker --version
+    7  ps -ef | grep docker
+    8  docker 
+    9  ls -lart
+   10  docker images
+   11  docker pull ubuntu
+   12  docker pull centos
+   13  docker pull jenkins
+   14  docker images
+   15  docker pull ubuntu:14.04
+   16  docker pull ubuntu:16.04
+   17  docker images
+   18  docker images | grep ubuntu
+   19  docker pull ubuntu:12.04
+   20  docker images | grep ubuntu
+   21  ls -alrt
+   22  docker images
+   23  docker rmi 5b117edd0b76 49f7960eb7e4
+   24  docker images
+   25  docker rmi ubuntu:14.04
+   26  docker rmi ubuntu:16.04
+   27  docker images
+   28  docker rmi jenkins
+   29  docker images
+   30  docker run -it ubuntu bash
+   31  docker images
+   32  docker run -it ubuntu bash
+   33  docker ps -a
+   34  docker commit c5e6a4fa3c0a customubuntu
+   35  dockr images
+   36  docker images
+   37  docker rm 85db64bbf93e c5e6a4fa3c0a
+   38  docker ps -a
+   39  docker images
+   40  docker run -it customubuntu bash
+   41  docker ps -a
+   42  docker images
+   43  docker run -it customubuntu bash
+   44  docker ps -a
+   45  docker commit f396b295f508 customubuntu
+   46  docker images
+   47  docker history customubuntu
+   48  docker images
+   49  history
+   50  ls -alrt
+   51  cd 
+   52  exit
+   53  docker-compose up -d
+   54  cd ~/Des
+   55  cd 
+   56  cd /usr/
+   57  ls -alrt
+   58  locate Dockerfile
+   59  cd /home/
+   60  ls -alrt
+   61  cd ubuntu/
+   62  ls -alrt
+   63  cd Desktop/
+   64  ls -alrt
+   65  docker-compose up -d
+   66  docker images
+   67  docker ps 
+   68  docker-compose down
+   69  docker images
+   70  docker ps -a
+   71  cd
+   72  docker images
+   73  mkdir /tmp/data
+   74  docker run -d -p 80:3306 --name mysql -v /tmp/data/:/var/lib/mysql mysql:5.7
+   75  ls -alrt
+   76  docker ps
+   77  docker run -d -p 80:3306 --name mysql -v /tmp/data/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password mysql:5.7
+   78  docker run -d -p 80:3306 --name mysql1 -v /tmp/data/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password mysql:5.7
+   79  docker ps 
+   80  cd /tmp/data/
+   81  ls -alrt
+   82  ls -lart
+   83  touch a.txt
+   84  docker exec -it mysql bash
+   85  docker exec -it mysql1 bash
+   86  ls -lart
+   87  docker ps
+   88  docker run -d mongo
+   89  docker ps
+   90  docker exec -it d74d07c46e4d bash
+   91  docker ps
+   92  history
+   93  history | more
+   94  !
+   95  history >history
